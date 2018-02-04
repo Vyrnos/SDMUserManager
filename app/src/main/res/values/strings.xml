@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">User Manager</string>
+    <string name="insert_user">Insertar Usuarios</string>
+    <string name="list_user">Listar Usuarios</string>
+    <string name="nacionality">Nacionalidad</string>
+    <string name="number_user_placeholder">Número de usuarios a insertar</string>
+    <string name="male">Hombre</string>
+    <string name="female">Mujer</string>
+    <string name="date_placeholder">DD/MM/YYYY</string>
+    <string name="genre">Sexo</string>
+    <string name="register_date">Fecha de Registo</string>
+    <string name="insert_top_instruction">Rellena los campos dependiendo del tipo de usuarios que quieras introducir</string>
 </resources>
