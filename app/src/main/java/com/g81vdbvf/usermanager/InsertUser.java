@@ -1,6 +1,14 @@
 package com.g81vdbvf.usermanager;
 
+import android.arch.persistence.db.SupportSQLiteOpenHelper;
+import android.arch.persistence.room.DatabaseConfiguration;
+import android.arch.persistence.room.InvalidationTracker;
+import android.arch.persistence.room.Room;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class InsertUser extends AppCompatActivity {
@@ -66,19 +75,26 @@ public class InsertUser extends AppCompatActivity {
                 try {
                     JSONObject reader = new JSONObject(request);
                     JSONArray results = reader.getJSONArray("results");
-                    ArrayList<HashMap<String,String>> contactList = new ArrayList<>();
+                    DatabaseInitializer di = new DatabaseInitializer();
+
+
                     for(int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
-                        String gender = obj.getString("gender");
-                        String registered = obj.getString("registered");
-                        HashMap<String, String> contact = new HashMap<>();
-                        contact.put("gender",gender);
-                        contact.put("registered",registered);
-                        contactList.add(contact);
+                        User user = new User();
+                        user.setGender(obj.getString("gender"));
+                        user.setRegistered(obj.getString("registered"));
+
+                        di.addUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").build(), user);
                     }
-                    for(int i = 0; i < contactList.size(); i++){
-                        Log.v("CONTACTOSSSS","El contacto es: GENERO: " + contactList.get(i).get("gender") + " REGISTRADO EN: "+ contactList.get(i).get("registered"));
+
+
+                    List<User> ul = di.getUserList(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").allowMainThreadQueries().build());
+                    for(int i = 0; i< ul.size() ; i++){
+                        Log.v("SQLITE","USER ID: "+ ul.get(i).getUid() + "\nGENDER: "+ ul.get(i).getGender() + "\nREGISTERED: " + ul.get(i).getRegistered());
                     }
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
