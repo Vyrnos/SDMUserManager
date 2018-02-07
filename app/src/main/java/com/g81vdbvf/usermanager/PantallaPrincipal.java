@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class PantallaPrincipal extends AppCompatActivity {
 
@@ -39,7 +40,8 @@ public class PantallaPrincipal extends AppCompatActivity {
         borrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseInitializer.deleteAll(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").build());
+                DatabaseInitializer.deleteAll(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").allowMainThreadQueries().build());
+                Toast.makeText(PantallaPrincipal.this ,"Usuarios borrados con éxito",Toast.LENGTH_LONG).show();
             }
         });
     }

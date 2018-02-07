@@ -12,4 +12,14 @@
     <string name="insert_top_instruction">Rellena los campos dependiendo del tipo de usuarios que quieras introducir</string>
     <string name="list_no_users">No hay usuarios actualmente</string>
     <string name="principal_borrar_bbdd">Borrar Base de datos entera</string>
+    <string name="list_photo">Fotografía de la persona</string>
+    <string name="profile_pic">Profile pic</string>
+    <string name="example">Ejemplo</string>
+    <string name="localizaci_n">Localización:</string>
+    <string name="nombre">Nombre:</string>
+    <string name="g_nero">Género:</string>
+    <string name="registrado_en">Registro:</string>
+    <string name="borrar_usuario">Borrar usuario</string>
+    <string name="contrase_a">Contraseña:</string>
+    <string name="usuario">Usuario:</string>
 </resources>

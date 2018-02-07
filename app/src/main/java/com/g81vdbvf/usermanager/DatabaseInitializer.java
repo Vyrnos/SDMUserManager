@@ -36,10 +36,22 @@ public class DatabaseInitializer {
         db.userDao().deleteAll();
     }
 
+    public static void deleteUserAsync(final AppDatabase db, User user) {
+        DeleteUserAsync task = new DeleteUserAsync(db);
+        task.execute(user);
+    }
+
     private static User addUser(final AppDatabase db, User user) {
         db.userDao().insertAll(user);
         return user;
     }
+
+    private static User deleteUser(final AppDatabase db, User user) {
+        db.userDao().delete(user);
+        return user;
+    }
+
+
 
     private static void populateWithTestData(AppDatabase db) {
         User user = new User();
@@ -79,6 +91,22 @@ public class DatabaseInitializer {
         protected Void doInBackground(final User... user) {
             for(int i = 0; i < user.length; i++) addUser(mDb,user[i]);
             return null;
+        }
+    }
+
+
+    private static class DeleteUserAsync extends AsyncTask<User, Void, Void> {
+
+        private final AppDatabase mDb;
+
+        DeleteUserAsync(AppDatabase db) {
+            mDb = db;
+        }
+
+        @Override
+        protected Void doInBackground(final User... user) {
+           deleteUser(mDb,user[0]);
+           return null;
         }
     }
 }

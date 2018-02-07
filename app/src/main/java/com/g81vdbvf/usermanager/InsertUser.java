@@ -50,7 +50,7 @@ public class InsertUser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 inserted = 0;
-                StringBuilder sb = new StringBuilder("https://randomuser.me/api/?inc=gender,registered,nat");
+                StringBuilder sb = new StringBuilder("https://randomuser.me/api/?inc=name,location,gender,picture,registered,login,nat");
 
                 if(nationality.getText().length()>0) sb.append("&nat=").append(nationality.getText());
                 if(numUsers.getText().length()>0) sb.append("&results=").append(numUsers.getText());
@@ -73,27 +73,34 @@ public class InsertUser extends AppCompatActivity {
                     JSONArray results = reader.getJSONArray("results");
                     @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                     @SuppressLint("SimpleDateFormat") SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    Date filterDate = format.parse(regDate.getText().toString());
+                    Date filterDate = new Date();
+                    if(regDate.getText().toString().length() > 0) filterDate = format.parse(regDate.getText().toString());
 
                     for(int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
-                        User user = new User();
-                        user.setGender(obj.getString("gender"));
-                        user.setRegistered(obj.getString("registered"));
-                        user.setNationality(obj.getString("nat"));
 
-                        if(apiFormat.parse(obj.getString("registered")).before(filterDate)){
-                            DatabaseInitializer.addUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").build(), user);
-                            inserted++;
+                        JSONObject nombreJSON = obj.getJSONObject("name");
+                        String nombre = nombreJSON.getString("title") + " " + nombreJSON.getString("first") + " " + nombreJSON.getString("last");
+
+                        nombreJSON = obj.getJSONObject("location");
+                        String localizacion = nombreJSON.getString("street") + " " + nombreJSON.getString("city") + " " + nombreJSON.getString("state") + " " + nombreJSON.getString("postcode");
+
+                        nombreJSON = obj.getJSONObject("login");
+                        String username = nombreJSON.getString("username");
+                        String password = nombreJSON.getString("password");
+
+                        nombreJSON = obj.getJSONObject("picture");
+                        String image = nombreJSON.getString("large");
+
+                        User user = new User(nombre, image, localizacion, username, password, obj.getString("gender").substring(0,1).toUpperCase(), format.format(apiFormat.parse(obj.getString("registered"))), obj.getString("nat"));
+
+                        if(regDate.getText().toString().equals("") || regDate.getText().toString().length()>0 && apiFormat.parse(obj.getString("registered")).before(filterDate)){
+                                DatabaseInitializer.addUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").fallbackToDestructiveMigration().build(), user);
+                                inserted++;
                         }
                     }
 
                     Toast.makeText(InsertUser.this,"Se han insertado "+inserted+ " usuarios",Toast.LENGTH_LONG).show();
-
-                    List<User> ul = DatabaseInitializer.getUserList(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").allowMainThreadQueries().build());
-                    for(int i = 0; i< ul.size() ; i++){
-                        Log.v("SQLITE","USER ID: "+ ul.get(i).getUid() + "\nNationality: "+ ul.get(i).getNationality() + "\nGENDER: "+ ul.get(i).getGender() + "\nREGISTERED: " + ul.get(i).getRegistered());
-                    }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
@@ -102,39 +109,39 @@ public class InsertUser extends AppCompatActivity {
         });
 
     }
-}
+    class GetUrlContentTask extends AsyncTask<String, Integer, String> {
+        private String content = "";
 
-class GetUrlContentTask extends AsyncTask<String, Integer, String> {
-    private String content = "";
+        GetUrlContentTask(){
 
-    GetUrlContentTask(){
+        }
+        protected String doInBackground(String... urls) {
 
-    }
-    protected String doInBackground(String... urls) {
-
-        try{
-            URL url = new URL(urls[0]);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             try{
-                connection.setRequestMethod("GET");
-                connection.setDoInput(true);
-                connection.setDoOutput(false);
-                connection.setConnectTimeout(5000);
-                connection.setReadTimeout(5000);
-                connection.connect();
-                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    content += line + "\n";
+                URL url = new URL(urls[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                try{
+                    connection.setRequestMethod("GET");
+                    connection.setDoInput(true);
+                    connection.setDoOutput(false);
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
+                    connection.connect();
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    while ((line = rd.readLine()) != null) {
+                        content += line + "\n";
+                    }
+
+                }finally {
+                    connection.disconnect();
                 }
 
-            }finally {
-                connection.disconnect();
+            }catch (Exception e) {
+                e.printStackTrace();
             }
-
-        }catch (Exception e) {
-            e.printStackTrace();
+            return content;
         }
-        return content;
     }
 }
+

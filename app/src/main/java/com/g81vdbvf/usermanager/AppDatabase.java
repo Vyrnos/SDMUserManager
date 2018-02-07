@@ -9,7 +9,7 @@ import android.content.Context;
  * Created by Vlad on 2/6/2018.
  */
 
-@Database(entities = {User.class}, version = 2)
+@Database(entities = {User.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

@@ -4,14 +4,25 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-/**
- * Created by Vlad on 2/6/2018.
- */
-
 @Entity(tableName = "user")
 public class User {
     @PrimaryKey(autoGenerate = true)
     private int uid;
+
+    @ColumnInfo(name= "name")
+    private String name;
+
+    @ColumnInfo(name = "image")
+    private String image;
+
+    @ColumnInfo(name = "location")
+    private String location;
+
+    @ColumnInfo(name = "username")
+    private String username;
+
+    @ColumnInfo(name = "password")
+    private String password;
 
     @ColumnInfo(name = "gender")
     private String gender;
@@ -21,6 +32,21 @@ public class User {
 
     @ColumnInfo(name= "nationality")
     private String nationality;
+
+    public User(){
+
+    }
+
+    public User(String name, String image, String location, String username, String password, String gender, String registered, String nationality) {
+        this.name = name;
+        this.image = image;
+        this.location = location;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.registered = registered;
+        this.nationality = nationality;
+    }
 
     String getNationality() {
         return nationality;
@@ -55,11 +81,58 @@ public class User {
         this.uid = uid;
     }
 
+    String getName() {
+        return name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    String getImage() {
+        return image;
+    }
+
+    void setImage(String image) {
+        this.image = image;
+    }
+
+    String getLocation() {
+        return location;
+    }
+
+    void setLocation(String location) {
+        this.location = location;
+    }
+
+    String getUsername() {
+        return username;
+    }
+
+    void setUsername(String username) {
+        this.username = username;
+    }
+
+    String getPassword() {
+        return password;
+    }
+
+    void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
-        return  "ID: " + uid +
-                "\nGender: " + gender +
-                "\nRegistered: " + registered +
-                "\nNationality: " + nationality;
+        return "User{" +
+                "uid=" + uid +
+                ", name='" + name + '\'' +
+                ", image=" + image +
+                ", location='" + location + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", registered='" + registered + '\'' +
+                ", nationality='" + nationality + '\'' +
+                '}';
     }
 }
