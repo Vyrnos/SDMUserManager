@@ -1,5 +1,6 @@
 package com.g81vdbvf.usermanager;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,7 @@ import android.widget.Button;
 
 public class PantallaPrincipal extends AppCompatActivity {
 
-    Button list, insert;
+    Button list, insert, borrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,7 @@ public class PantallaPrincipal extends AppCompatActivity {
 
         list=(Button) findViewById(R.id.buttonList);
         insert=(Button) findViewById(R.id.buttonInsert);
+        borrar = (Button) findViewById(R.id.buttonBorrar);
 
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +33,13 @@ public class PantallaPrincipal extends AppCompatActivity {
             public void onClick(View v) {
                 Intent abrirList = new Intent("android.intent.action.LISTUSER");
                 startActivity(abrirList);
+            }
+        });
+
+        borrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseInitializer.deleteAll(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").build());
             }
         });
     }

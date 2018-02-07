@@ -10,4 +10,6 @@
     <string name="genre">Sexo</string>
     <string name="register_date">Fecha de Registo</string>
     <string name="insert_top_instruction">Rellena los campos dependiendo del tipo de usuarios que quieras introducir</string>
+    <string name="list_no_users">No hay usuarios actualmente</string>
+    <string name="principal_borrar_bbdd">Borrar Base de datos entera</string>
 </resources>

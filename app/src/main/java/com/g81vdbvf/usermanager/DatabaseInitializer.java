@@ -45,6 +45,7 @@ public class DatabaseInitializer {
         User user = new User();
         user.setGender("male");
         user.setRegistered("null");
+        user.setNationality("GB");
         addUser(db, user);
 
         List<User> userList = db.userDao().getAll();

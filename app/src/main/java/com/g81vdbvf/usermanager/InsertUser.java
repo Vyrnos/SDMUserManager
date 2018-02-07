@@ -1,14 +1,8 @@
 package com.g81vdbvf.usermanager;
 
-import android.arch.persistence.db.SupportSQLiteOpenHelper;
-import android.arch.persistence.room.DatabaseConfiguration;
-import android.arch.persistence.room.InvalidationTracker;
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,8 +20,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -35,27 +31,29 @@ public class InsertUser extends AppCompatActivity {
     Button insertCallAPI;
     EditText nationality, numUsers, regDate;
     CheckBox male, female;
+    int inserted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_user);
 
-        nationality = (EditText) findViewById(R.id.nacionality);
-        numUsers = (EditText) findViewById(R.id.numUsers);
-        //regDate = findViewById(R.id.regDate);
+        nationality = findViewById(R.id.nacionality);
+        numUsers = findViewById(R.id.numUsers);
+        regDate = findViewById(R.id.regDate);
 
-        male = (CheckBox) findViewById(R.id.checkMale);
-        female = (CheckBox) findViewById(R.id.checkFemale);
+        male = findViewById(R.id.checkMale);
+        female = findViewById(R.id.checkFemale);
 
-        insertCallAPI = (Button) findViewById(R.id.insertCallAPI);
+        insertCallAPI = findViewById(R.id.insertCallAPI);
         insertCallAPI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inserted = 0;
                 StringBuilder sb = new StringBuilder("https://randomuser.me/api/?inc=gender,registered,nat");
 
-                if(nationality.getText().length()>0) sb.append("&nat="+nationality.getText());
-                if(numUsers.getText().length()>0) sb.append("&results="+numUsers.getText());
+                if(nationality.getText().length()>0) sb.append("&nat=").append(nationality.getText());
+                if(numUsers.getText().length()>0) sb.append("&results=").append(numUsers.getText());
 
                 if(male.isChecked()){
                     sb.append("&gender=male");
@@ -65,9 +63,7 @@ public class InsertUser extends AppCompatActivity {
                 String request = null;
                 try {
                     request = new GetUrlContentTask().execute(sb.toString()).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
 
@@ -75,27 +71,30 @@ public class InsertUser extends AppCompatActivity {
                 try {
                     JSONObject reader = new JSONObject(request);
                     JSONArray results = reader.getJSONArray("results");
-                    DatabaseInitializer di = new DatabaseInitializer();
-
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    Date filterDate = format.parse(regDate.getText().toString());
 
                     for(int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
                         User user = new User();
                         user.setGender(obj.getString("gender"));
                         user.setRegistered(obj.getString("registered"));
+                        user.setNationality(obj.getString("nat"));
 
-                        di.addUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").build(), user);
+                        if(apiFormat.parse(obj.getString("registered")).before(filterDate)){
+                            DatabaseInitializer.addUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").build(), user);
+                            inserted++;
+                        }
                     }
 
+                    Toast.makeText(InsertUser.this,"Se han insertado "+inserted+ " usuarios",Toast.LENGTH_LONG).show();
 
-                    List<User> ul = di.getUserList(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").allowMainThreadQueries().build());
+                    List<User> ul = DatabaseInitializer.getUserList(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").allowMainThreadQueries().build());
                     for(int i = 0; i< ul.size() ; i++){
-                        Log.v("SQLITE","USER ID: "+ ul.get(i).getUid() + "\nGENDER: "+ ul.get(i).getGender() + "\nREGISTERED: " + ul.get(i).getRegistered());
+                        Log.v("SQLITE","USER ID: "+ ul.get(i).getUid() + "\nNationality: "+ ul.get(i).getNationality() + "\nGENDER: "+ ul.get(i).getGender() + "\nREGISTERED: " + ul.get(i).getRegistered());
                     }
-
-
-
-                } catch (JSONException e) {
+                } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -106,9 +105,9 @@ public class InsertUser extends AppCompatActivity {
 }
 
 class GetUrlContentTask extends AsyncTask<String, Integer, String> {
-    String content = "";
+    private String content = "";
 
-    public GetUrlContentTask(){
+    GetUrlContentTask(){
 
     }
     protected String doInBackground(String... urls) {

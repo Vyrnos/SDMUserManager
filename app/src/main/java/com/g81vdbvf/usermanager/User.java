@@ -19,28 +19,47 @@ public class User {
     @ColumnInfo(name = "registered")
     private String registered;
 
-    public String getGender() {
+    @ColumnInfo(name= "nationality")
+    private String nationality;
+
+    String getNationality() {
+        return nationality;
+    }
+
+    void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    void setGender(String gender) {
         this.gender = gender;
     }
 
-    public String getRegistered() {
+    String getRegistered() {
         return registered;
     }
 
-    public void setRegistered(String registered) {
+    void setRegistered(String registered) {
         this.registered = registered;
     }
 
-    public int getUid() {
+    int getUid() {
 
         return uid;
     }
 
-    public void setUid(int uid) {
+    void setUid(int uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return  "ID: " + uid +
+                "\nGender: " + gender +
+                "\nRegistered: " + registered +
+                "\nNationality: " + nationality;
     }
 }

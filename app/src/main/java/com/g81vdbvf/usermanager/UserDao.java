@@ -20,6 +20,9 @@ public interface UserDao {
     @Query("SELECT * FROM user where gender LIKE :gender")
     User findByGender(String gender);
 
+    @Query("SELECT * FROM user where nationality LIKE :nationality")
+    User findByNationality(String nationality);
+
     @Query("SELECT COUNT(*) from user")
     int countUsers();
 
