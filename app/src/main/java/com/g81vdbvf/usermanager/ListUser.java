@@ -1,6 +1,7 @@
 package com.g81vdbvf.usermanager;
 
 import android.arch.persistence.room.Room;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
