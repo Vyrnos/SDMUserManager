@@ -22,4 +22,24 @@
     <string name="borrar_usuario">Borrar usuario</string>
     <string name="contrase_a">Contraseña:</string>
     <string name="usuario">Usuario:</string>
+    <string-array name="nationalities">
+        <item>Nacionalidad</item>
+        <item>AU: Australia</item>
+        <item>BR: Brazil</item>
+        <item>CA: Canada</item>
+        <item>CH: China</item>
+        <item>DE: Germany </item>
+        <item>DK: Denmark </item>
+        <item>ES: Spain  </item>
+        <item>FI: Finland  </item>
+        <item>FR: France</item>
+        <item>GB: British </item>
+        <item>IE: Ireland </item>
+        <item>IR: Iran  </item>
+        <item>NL: Netherlands</item>
+        <item>NZ: New Zealand</item>
+        <item>TR: Turkey</item>
+        <item>US: United States</item>
+    </string-array>
+
 </resources>

@@ -5,11 +5,17 @@ import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -25,13 +31,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InsertUser extends AppCompatActivity {
 
     Button insertCallAPI;
-    EditText nationality, numUsers, regDate;
+    EditText numUsers, regDate;
+    Spinner nationality;
     CheckBox male, female;
     int inserted;
+    boolean validDate = true;
+
+    public boolean isValidDate(String string){
+        String PATTERN = "/^(0?[1-9]|1[0-2])[\\/](0?[1-9]|[12]\\d|3[01])[\\/](19|20)\\d{2}$/";
+        Pattern pattern = Pattern.compile(PATTERN);
+        Matcher matcher = pattern.matcher(string);
+        return matcher.matches();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +57,47 @@ public class InsertUser extends AppCompatActivity {
         setContentView(R.layout.activity_insert_user);
 
         nationality = findViewById(R.id.nacionality);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.nationalities, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        nationality.setAdapter(adapter);
+
         numUsers = findViewById(R.id.numUsers);
         regDate = findViewById(R.id.regDate);
+
+        regDate.addTextChangedListener(new TextValidator(regDate) {
+            @Override public void validate(TextView textView, String text) {
+                String PATTERN = "^(0?[1-9]|[12]\\d|3[01])[\\/](0?[1-9]|1[0-2])[\\/](19|20)\\d{2}$";
+                Pattern pattern = Pattern.compile(PATTERN);
+                Matcher matcher = pattern.matcher(text);
+                if(!matcher.matches()){
+                    textView.setError("Fecha invalida");
+                    validDate = false;
+                }else{
+                    validDate = true;
+                }
+            }
+        });
 
         male = findViewById(R.id.checkMale);
         female = findViewById(R.id.checkFemale);
 
         insertCallAPI = findViewById(R.id.insertCallAPI);
+
+
         insertCallAPI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 inserted = 0;
                 StringBuilder sb = new StringBuilder("https://randomuser.me/api/?inc=name,location,gender,picture,registered,login,nat");
 
-                if(nationality.getText().length()>0) sb.append("&nat=").append(nationality.getText());
+                if(!nationality.getSelectedItem().toString().equals("Nacionalidad")) {
+                    sb.append("&nat=").append(nationality.getSelectedItem().toString().substring(0, 2));
+                    Log.v("NATIONALITY", "ESTOY DENTRO Y EL SB ES: "+ sb.toString());
+                }
                 if(numUsers.getText().length()>0) sb.append("&results=").append(numUsers.getText());
 
                 if(male.isChecked()){
@@ -80,7 +125,13 @@ public class InsertUser extends AppCompatActivity {
                         JSONObject obj = results.getJSONObject(i);
 
                         JSONObject nombreJSON = obj.getJSONObject("name");
-                        String nombre = nombreJSON.getString("title") + " " + nombreJSON.getString("first") + " " + nombreJSON.getString("last");
+                        char [] fTitle = nombreJSON.getString("title").toCharArray();
+                        fTitle[0] = Character.toUpperCase(fTitle[0]);
+                        char [] fFirst = nombreJSON.getString("first").toCharArray();
+                        fFirst[0] = Character.toUpperCase(fFirst[0]);
+                        char [] fLast = nombreJSON.getString("last").toCharArray();
+                        fLast[0] = Character.toUpperCase(fLast[0]);
+                        String nombre = new String(fTitle) + " " + new String(fFirst) + " " + new String(fLast);
 
                         nombreJSON = obj.getJSONObject("location");
                         String localizacion = nombreJSON.getString("street") + " " + nombreJSON.getString("city") + " " + nombreJSON.getString("state") + " " + nombreJSON.getString("postcode");
@@ -93,11 +144,11 @@ public class InsertUser extends AppCompatActivity {
                         String image = nombreJSON.getString("large");
 
                         User user = new User(nombre, image, localizacion, username, password, obj.getString("gender").substring(0,1).toUpperCase(), format.format(apiFormat.parse(obj.getString("registered"))), obj.getString("nat"));
-
-                        if(regDate.getText().toString().equals("") || regDate.getText().toString().length()>0 && apiFormat.parse(obj.getString("registered")).before(filterDate)){
+                        if(validDate)
+                            if(regDate.getText().toString().equals("") || regDate.getText().toString().length()>0 && apiFormat.parse(obj.getString("registered")).before(filterDate)){
                                 DatabaseInitializer.addUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").fallbackToDestructiveMigration().build(), user);
                                 inserted++;
-                        }
+                            }
                     }
 
                     Toast.makeText(InsertUser.this,"Se han insertado "+inserted+ " usuarios",Toast.LENGTH_LONG).show();
@@ -107,6 +158,8 @@ public class InsertUser extends AppCompatActivity {
 
             }
         });
+
+
 
     }
     class GetUrlContentTask extends AsyncTask<String, Integer, String> {
