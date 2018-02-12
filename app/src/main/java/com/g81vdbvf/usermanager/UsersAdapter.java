@@ -36,7 +36,6 @@ public class UsersAdapter extends ArrayAdapter<User> {
         final ImageButton localizacion = convertView.findViewById(R.id.imageButton3);
         TextView usuario = convertView.findViewById(R.id.username);
         TextView password = convertView.findViewById(R.id.password);
-        //ImageButton borrado = convertView.findViewById(R.id.borrarUser);
 
         new DownloadImageTask(profilePic).execute(user.getImage());
         nombre.setText(user.getName());
@@ -69,7 +68,7 @@ public class UsersAdapter extends ArrayAdapter<User> {
         return convertView;
 }
 
-private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
 
     public DownloadImageTask(ImageView bmImage) {
