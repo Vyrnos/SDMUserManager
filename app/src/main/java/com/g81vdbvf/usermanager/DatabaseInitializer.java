@@ -46,8 +46,13 @@ public class DatabaseInitializer {
         return user;
     }
 
-    private static User deleteUser(final AppDatabase db, User user) {
+    public static User deleteUser(final AppDatabase db, User user) {
         db.userDao().delete(user);
+        return user;
+    }
+
+    public static User updateUser(final AppDatabase db, User user) {
+        db.userDao().update(user);
         return user;
     }
 

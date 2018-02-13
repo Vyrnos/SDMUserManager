@@ -1,12 +1,15 @@
 package com.g81vdbvf.usermanager;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -63,15 +66,32 @@ public class SpecificUser extends AppCompatActivity {
         });
         nat.setText(user.getNationality());
 
+        mod.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String[] nationalities = getResources().getStringArray(R.array.nationalities);
+                int index = 0;
+                for(String s : nationalities){
+                    if(s.startsWith(user.getNationality())) break;
+                    index++;
+                }
+                Log.v("INDEXXXXXXXXX", "INDEX IS : " +index);
+                Intent in = new Intent("android.intent.action.MODUSER");
+                in.putExtra("User", user);
+                in.putExtra("Nat", index);
+                startActivity(in);
+            }
+        });
 
         del.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                DatabaseInitializer.deleteUserAsync(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").fallbackToDestructiveMigration().build(), user);
-                Toast.makeText(SpecificUser.this,"Se ha borrado el usuario con éxito",Toast.LENGTH_LONG).show();
+                DatabaseInitializer.deleteUser(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").fallbackToDestructiveMigration().allowMainThreadQueries().build(), user);
+                Toast.makeText(SpecificUser.this,"Se ha borrado el usuario con éxito",Toast.LENGTH_SHORT).show();
                 NavUtils.navigateUpFromSameTask(SpecificUser.this);
             }
         });
+
 
 
     }

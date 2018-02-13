@@ -25,6 +25,13 @@
     <string name="nationality">Nationality:</string>
     <string name="modificar_usuario">Modificar Usuario</string>
     <string name="borrar_single">Borrar Usuario</string>
+    <string name="guardar_cambios">Guardar Cambios</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="localizacion">Localizacion:</string>
+    <string name="nombreSP">Nombre</string>
+    <string name="usuarioSP">Usuario</string>
+    <string name="contrase_aSP">Contraseña</string>
+    <string name="nacionalidadSP">Nacionalidad</string>
     <string-array name="nationalities">
         <item>Nacionalidad</item>
         <item>AU: Australia</item>

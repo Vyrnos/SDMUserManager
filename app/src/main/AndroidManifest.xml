@@ -40,10 +40,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SpecificUser"
-            android:parentActivityName="com.g81vdbvf.usermanager.ListUser">
+        <activity
+            android:name=".SpecificUser"
+            android:parentActivityName=".ListUser">
             <intent-filter>
                 <action android:name="android.intent.action.SPECIFICUSER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ModUser"
+            android:parentActivityName=".ListUser">
+            <intent-filter>
+                <action android:name="android.intent.action.MODUSER" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

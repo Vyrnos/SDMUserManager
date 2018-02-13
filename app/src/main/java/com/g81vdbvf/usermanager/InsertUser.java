@@ -151,7 +151,7 @@ public class InsertUser extends AppCompatActivity {
                             }
                     }
 
-                    Toast.makeText(InsertUser.this,"Se han insertado "+inserted+ " usuarios",Toast.LENGTH_LONG).show();
+                    Toast.makeText(InsertUser.this,"Se han insertado "+inserted+ " usuarios",Toast.LENGTH_SHORT).show();
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
