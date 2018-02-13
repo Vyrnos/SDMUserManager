@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ListUser extends AppCompatActivity {
 
-    ListView list;
+    public ListView list;
     List<User> ul;
 
     @Override

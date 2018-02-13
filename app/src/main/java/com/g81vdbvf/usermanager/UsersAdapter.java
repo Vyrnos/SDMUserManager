@@ -49,21 +49,13 @@ public class UsersAdapter extends ArrayAdapter<User> {
             localizacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String uri = "http://maps.google.com/maps?saddr=" + user.getLocation();
-                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
-                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                    Uri uri = Uri.parse("geo:0,0?q=" + Uri.encode(user.getLocation()));
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                    intent.setPackage("com.google.android.apps.maps");
                     UsersAdapter.this.getContext().startActivity(intent);
                 }
             });
         }
-
-        /*borrado.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                DatabaseInitializer.deleteUserAsync(Room.databaseBuilder(UsersAdapter.this.getContext(), AppDatabase.class, "user-database").fallbackToDestructiveMigration().build(), user);
-
-            }
-        });*/
 
         return convertView;
 }

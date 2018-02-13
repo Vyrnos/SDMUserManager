@@ -40,7 +40,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SpecificUser">
+        <activity android:name=".SpecificUser"
+            android:parentActivityName="com.g81vdbvf.usermanager.ListUser">
             <intent-filter>
                 <action android:name="android.intent.action.SPECIFICUSER" />
 
