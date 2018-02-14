@@ -16,6 +16,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/insert_user"
+        android:drawableLeft="@drawable/ic_accessibility_white_36dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"

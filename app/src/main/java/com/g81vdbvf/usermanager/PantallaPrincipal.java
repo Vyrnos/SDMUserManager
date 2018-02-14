@@ -41,7 +41,7 @@ public class PantallaPrincipal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseInitializer.deleteAll(Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-database").allowMainThreadQueries().build());
-                Toast.makeText(PantallaPrincipal.this ,"Usuarios borrados con éxito",Toast.LENGTH_LONG).show();
+                Toast.makeText(PantallaPrincipal.this ,"Usuarios borrados con éxito",Toast.LENGTH_SHORT).show();
             }
         });
     }

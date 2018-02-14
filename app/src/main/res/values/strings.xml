@@ -32,6 +32,11 @@
     <string name="usuarioSP">Usuario</string>
     <string name="contrase_aSP">Contraseña</string>
     <string name="nacionalidadSP">Nacionalidad</string>
+    <string name="option">Elige una opcion</string>
+    <string name="insert_user_principal">Inserta un usuario</string>
+    <string name="listed_users">Lista de usuarios</string>
+    <string name="specific_label">Usuario específico</string>
+    <string name="modify_label">Modifica el usuario</string>
     <string-array name="nationalities">
         <item>Nacionalidad</item>
         <item>AU: Australia</item>
