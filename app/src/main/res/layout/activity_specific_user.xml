@@ -102,13 +102,14 @@
 
     <ImageButton
         android:id="@+id/specific_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_width="60dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#FFF"
         app:layout_constraintBottom_toTopOf="@+id/specific_mod"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_map" />
+        app:srcCompat="@drawable/ic_location_on_black_36dp" />
 
     <TextView
         android:id="@+id/textView10"
@@ -186,8 +187,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/colorAccent"
         android:text="@string/modificar_usuario"
+        android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/specific_location"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -197,8 +200,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="52dp"
+        android:backgroundTint="#F00"
         android:text="@string/borrar_single"
+
+        android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="@+id/specific_location" />

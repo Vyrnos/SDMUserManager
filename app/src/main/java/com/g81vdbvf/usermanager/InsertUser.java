@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -156,12 +157,14 @@ public class InsertUser extends AppCompatActivity {
 
                     Toast.makeText(InsertUser.this,"Se han insertado "+inserted+ " usuarios",Toast.LENGTH_SHORT).show();
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(InsertUser.this)
-                                    .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                                    .setSmallIcon(R.drawable.ic_supervisor_account_white_36dp)
                                     .setContentTitle("User Manager")
                                     .setContentText("Se han insertado "+inserted+" usuarios");
 
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     notificationManager.notify(1, mBuilder.build());
+
+                    NavUtils.navigateUpFromSameTask(InsertUser.this);
 
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
