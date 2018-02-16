@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PantallaPrincipal"
+        <activity
+            android:name=".PantallaPrincipal"
             android:label="@string/option">
             <intent-filter>
                 <action android:name="android.intent.action.PRINCIPAL" />
@@ -27,16 +28,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".InsertUser"
-            android:parentActivityName=".PantallaPrincipal"
-            android:label="@string/insert_user_principal">
+        <activity
+            android:name=".InsertUser"
+            android:label="@string/insert_user_principal"
+            android:parentActivityName=".PantallaPrincipal">
             <intent-filter>
                 <action android:name="android.intent.action.INSERTUSER" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListUser"
+        <activity
+            android:name=".ListUser"
             android:label="@string/listed_users">
             <intent-filter>
                 <action android:name="android.intent.action.LISTUSER" />
@@ -46,17 +49,18 @@
         </activity>
         <activity
             android:name=".SpecificUser"
-            android:parentActivityName=".ListUser"
-            android:label="@string/specific_label">
+            android:label="@string/specific_label"
+            android:parentActivityName=".ListUser">
             <intent-filter>
                 <action android:name="android.intent.action.SPECIFICUSER" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ModUser"
-            android:parentActivityName=".ListUser"
-            android:label="@string/modify_label">
+        <activity
+            android:name=".ModUser"
+            android:label="@string/modify_label"
+            android:parentActivityName=".ListUser">
             <intent-filter>
                 <action android:name="android.intent.action.MODUSER" />
 

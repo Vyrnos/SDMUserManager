@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class ListUser extends AppCompatActivity {
+public class ListUser extends BaseActivity {
 
     public ListView list;
     List<User> ul;
@@ -20,7 +20,6 @@ public class ListUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_user);
 
         list = findViewById(R.id.lv);
 
@@ -36,9 +35,15 @@ public class ListUser extends AppCompatActivity {
             }
         });
         list.setAdapter(arrayAdapter);
+    }
 
+    @Override
+    int getContentViewId() {
+        return R.layout.activity_list_user;
+    }
 
-
-
+    @Override
+    int getNavigationMenuItemId() {
+        return R.id.navigation_list;
     }
 }

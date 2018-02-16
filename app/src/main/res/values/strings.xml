@@ -56,5 +56,13 @@
         <item>TR: Turkey</item>
         <item>US: United States</item>
     </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="listusr">Listar Usuario</string>
+    <string name="insertar">Insertar</string>
+    <string name="listar">Listar</string>
+    <string name="borrar_base_de_datos">Borrar base de datos</string>
 
 </resources>

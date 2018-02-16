@@ -38,7 +38,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InsertUser extends AppCompatActivity {
+public class InsertUser extends BaseActivity {
 
     Button insertCallAPI;
     EditText numUsers, regDate;
@@ -58,7 +58,6 @@ public class InsertUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insert_user);
 
         nationality = findViewById(R.id.nacionality);
 
@@ -176,6 +175,17 @@ public class InsertUser extends AppCompatActivity {
 
 
     }
+
+    @Override
+    int getContentViewId() {
+        return R.layout.activity_insert_user;
+    }
+
+    @Override
+    int getNavigationMenuItemId() {
+        return R.id.navigation_insert;
+    }
+
     class GetUrlContentTask extends AsyncTask<String, Integer, String> {
         private String content = "";
 
