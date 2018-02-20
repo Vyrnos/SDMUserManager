@@ -109,7 +109,8 @@
         app:layout_constraintBottom_toTopOf="@+id/specific_mod"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_location_on_black_36dp" />
+        app:srcCompat="@drawable/ic_location_on_black_36dp"
+        android:contentDescription="@string/list_photo" />
 
     <TextView
         android:id="@+id/textView10"

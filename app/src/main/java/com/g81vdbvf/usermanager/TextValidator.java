@@ -4,14 +4,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
-/**
- * Created by Vlad on 2/11/2018.
- */
-
 public abstract class TextValidator implements TextWatcher {
     private final TextView textView;
 
-    public TextValidator(TextView textView) {
+    TextValidator(TextView textView) {
         this.textView = textView;
     }
 

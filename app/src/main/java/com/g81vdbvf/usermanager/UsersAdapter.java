@@ -1,5 +1,6 @@
 package com.g81vdbvf.usermanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,9 +20,12 @@ import java.util.List;
 
 
 public class UsersAdapter extends ArrayAdapter<User> {
-    public UsersAdapter(Context context, List<User> users){
+
+
+    UsersAdapter(Context context, List<User> users){
         super(context,0,users);
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final User user = getItem(position);
@@ -37,6 +41,7 @@ public class UsersAdapter extends ArrayAdapter<User> {
         TextView usuario = convertView.findViewById(R.id.username);
         TextView password = convertView.findViewById(R.id.password);
 
+        if (user == null) throw new AssertionError();
         new DownloadImageTask(profilePic).execute(user.getImage());
         nombre.setText(user.getName());
         genero.setText(user.getGender());
@@ -61,9 +66,10 @@ public class UsersAdapter extends ArrayAdapter<User> {
 }
 
 public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    @SuppressLint("StaticFieldLeak")
     ImageView bmImage;
 
-    public DownloadImageTask(ImageView bmImage) {
+    DownloadImageTask(ImageView bmImage) {
         this.bmImage = bmImage;
     }
 

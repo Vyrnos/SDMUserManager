@@ -64,5 +64,6 @@
     <string name="insertar">Insertar</string>
     <string name="listar">Listar</string>
     <string name="borrar_base_de_datos">Borrar base de datos</string>
+    <string name="ubi">Ubicacion</string>
 
 </resources>

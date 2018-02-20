@@ -8,9 +8,6 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-/**
- * Created by Vlad on 2/6/2018.
- */
 
 @Dao
 public interface UserDao {
@@ -18,14 +15,14 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> getAll();
 
-    @Query("SELECT * FROM user where gender LIKE :gender")
+    /*@Query("SELECT * FROM user where gender LIKE :gender")
     User findByGender(String gender);
 
     @Query("SELECT * FROM user where nationality LIKE :nationality")
     User findByNationality(String nationality);
 
     @Query("SELECT COUNT(*) from user")
-    int countUsers();
+    int countUsers();*/
 
     @Insert
     void insertAll(User... users);

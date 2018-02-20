@@ -7,13 +7,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,7 +28,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,14 +40,6 @@ public class InsertUser extends BaseActivity {
     CheckBox male, female;
     int inserted;
     boolean validDate = true;
-
-    public boolean isValidDate(String string){
-        String PATTERN = "/^(0?[1-9]|1[0-2])[\\/](0?[1-9]|[12]\\d|3[01])[\\/](19|20)\\d{2}$/";
-        Pattern pattern = Pattern.compile(PATTERN);
-        Matcher matcher = pattern.matcher(string);
-        return matcher.matches();
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +59,7 @@ public class InsertUser extends BaseActivity {
 
         regDate.addTextChangedListener(new TextValidator(regDate) {
             @Override public void validate(TextView textView, String text) {
-                String PATTERN = "^(0?[1-9]|[12]\\d|3[01])[\\/](0?[1-9]|1[0-2])[\\/](19|20)\\d{2}$";
+                String PATTERN = "^(0?[1-9]|[12]\\d|3[01])[/](0?[1-9]|1[0-2])[/](19|20)\\d{2}$";
                 Pattern pattern = Pattern.compile(PATTERN);
                 Matcher matcher = pattern.matcher(text);
                 if(!matcher.matches()){
@@ -99,7 +85,6 @@ public class InsertUser extends BaseActivity {
 
                 if(!nationality.getSelectedItem().toString().equals("Nacionalidad")) {
                     sb.append("&nat=").append(nationality.getSelectedItem().toString().substring(0, 2));
-                    Log.v("NATIONALITY", "ESTOY DENTRO Y EL SB ES: "+ sb.toString());
                 }
                 if(numUsers.getText().length()>0) sb.append("&results=").append(numUsers.getText());
 
@@ -115,7 +100,6 @@ public class InsertUser extends BaseActivity {
                     e.printStackTrace();
                 }
 
-                Log.v("INSERT_USER", "REQUEST TO STRING IS "+ request);
                 try {
                     JSONObject reader = new JSONObject(request);
                     JSONArray results = reader.getJSONArray("results");
@@ -128,13 +112,11 @@ public class InsertUser extends BaseActivity {
                         JSONObject obj = results.getJSONObject(i);
 
                         JSONObject nombreJSON = obj.getJSONObject("name");
-                        char [] fTitle = nombreJSON.getString("title").toCharArray();
-                        fTitle[0] = Character.toUpperCase(fTitle[0]);
                         char [] fFirst = nombreJSON.getString("first").toCharArray();
                         fFirst[0] = Character.toUpperCase(fFirst[0]);
                         char [] fLast = nombreJSON.getString("last").toCharArray();
                         fLast[0] = Character.toUpperCase(fLast[0]);
-                        String nombre = new String(fTitle) + " " + new String(fFirst) + " " + new String(fLast);
+                        String nombre = new String(fFirst) + " " + new String(fLast);
 
                         nombreJSON = obj.getJSONObject("location");
                         String localizacion = nombreJSON.getString("street") + " " + nombreJSON.getString("city") + " " + nombreJSON.getString("state") + " " + nombreJSON.getString("postcode");
@@ -161,6 +143,7 @@ public class InsertUser extends BaseActivity {
                                     .setContentText("Se han insertado "+inserted+" usuarios");
 
                     NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    assert notificationManager != null;
                     notificationManager.notify(1, mBuilder.build());
 
                     NavUtils.navigateUpFromSameTask(InsertUser.this);
@@ -186,7 +169,7 @@ public class InsertUser extends BaseActivity {
         return R.id.navigation_insert;
     }
 
-    class GetUrlContentTask extends AsyncTask<String, Integer, String> {
+    static class GetUrlContentTask extends AsyncTask<String, Integer, String> {
         private String content = "";
 
         GetUrlContentTask(){

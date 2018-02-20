@@ -2,8 +2,6 @@ package com.g81vdbvf.usermanager;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,9 +14,9 @@ public class PantallaPrincipal extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        list=(Button) findViewById(R.id.buttonList);
-        insert=(Button) findViewById(R.id.buttonInsert);
-        borrar = (Button) findViewById(R.id.buttonBorrar);
+        list= findViewById(R.id.buttonList);
+        insert= findViewById(R.id.buttonInsert);
+        borrar = findViewById(R.id.buttonBorrar);
 
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
