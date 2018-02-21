@@ -60,12 +60,34 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonList"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintVertical_bias="0.449" />
+
+    <Button
+        android:id="@+id/buttonPrefs"
+        android:layout_width="265dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#000"
+        android:drawableStart="@drawable/ic_delete_sweep_white_36dp"
+        android:drawableTint="#F00"
+        android:text="@string/borrar_shared_prefs"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBorrar"
+        app:layout_constraintVertical_bias="0.0"
+        android:onClick="deletePrefs"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -79,5 +101,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
+
+
 
 </android.support.constraint.ConstraintLayout>

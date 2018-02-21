@@ -3,6 +3,9 @@ package com.g81vdbvf.usermanager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 class DatabaseInitializer {
@@ -14,6 +17,31 @@ class DatabaseInitializer {
 
     static List<User> getUserList(@NonNull final AppDatabase db){
         return db.userDao().getAll();
+    }
+
+    static List<Login> getLoginList(@NonNull final AppDatabase db){
+        return db.userDao().getAllLogin();
+    }
+
+
+    private static void addLogin(@NonNull final AppDatabase db, Login login) {
+        db.userDao().insertAll(login);
+    }
+
+    static void initializeLogin(@NonNull final AppDatabase db){
+        Login cred = new Login();
+        cred.setUsername("asd");
+        String pss = "123";
+        cred.setPassword(bin2hex(getHash("123")));
+        addLogin(db, cred);
+    }
+
+    static Login getCredentials(@NonNull final AppDatabase db, String user, String password){
+        return db.userDao().findByUserAndPassword(user,password);
+    }
+
+    static void deleteAllLogin(@NonNull final AppDatabase db){
+        db.userDao().deleteAllLogin();
     }
 
     static void deleteAll(@NonNull final AppDatabase db){
@@ -45,6 +73,20 @@ class DatabaseInitializer {
             for (User anUser : user) addUser(mDb, anUser);
             return null;
         }
+    }
+
+    static byte[] getHash(String password) {
+        MessageDigest digest=null;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e1) {
+            e1.printStackTrace();
+        }
+        digest.reset();
+        return digest.digest(password.getBytes());
+    }
+    static String bin2hex(byte[] data) {
+        return String.format("%0" + (data.length*2) + "X", new BigInteger(1, data));
     }
 
 }

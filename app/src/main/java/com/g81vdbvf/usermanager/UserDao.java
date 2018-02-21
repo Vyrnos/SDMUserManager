@@ -35,4 +35,19 @@ public interface UserDao {
 
     @Query("DELETE FROM user WHERE 1=1")
     void deleteAll();
+
+    @Query("DELETE FROM login WHERE 1=1")
+    void deleteAllLogin();
+
+    @Delete
+    void delete(Login login);
+
+    @Query("SELECT * FROM login")
+    List<Login> getAllLogin();
+
+    @Insert
+    void insertAll(Login... logins);
+
+    @Query("SELECT * FROM login where username LIKE :user AND password LIKE :password")
+    Login findByUserAndPassword(String user, String password);
 }

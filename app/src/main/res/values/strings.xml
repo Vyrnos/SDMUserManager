@@ -65,5 +65,10 @@
     <string name="listar">Listar</string>
     <string name="borrar_base_de_datos">Borrar base de datos</string>
     <string name="ubi">Ubicacion</string>
+    <string name="login_text">Introduce tus credenciales para acceder a la aplicación</string>
+    <string name="iniciar_sesi_n">Iniciar Sesión</string>
+    <string name="login">Inicio de Sesión</string>
+    <string name="borrar_shared_preferences">Borrar Shared Preferences</string>
+    <string name="borrar_shared_prefs">Borrar Shared Prefs</string>
 
 </resources>
