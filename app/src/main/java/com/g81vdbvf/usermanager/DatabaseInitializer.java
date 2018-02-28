@@ -31,8 +31,7 @@ class DatabaseInitializer {
     static void initializeLogin(@NonNull final AppDatabase db){
         Login cred = new Login();
         cred.setUsername("asd");
-        String pss = "123";
-        cred.setPassword(bin2hex(getHash("123")));
+        cred.setPassword("A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3"); //la pass es 123
         addLogin(db, cred);
     }
 
