@@ -20,7 +20,6 @@ public class InicioSesion extends AppCompatActivity {
     public static final String MIS_PREFERENCIAS = "com.g81vdbvf.usermanager.login";
     public static final String NOMBRE = "Username";
     public static final String CONTRA = "Password";
-    boolean usedPreferences = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class InicioSesion extends AppCompatActivity {
         }
         if(sprefs.contains(CONTRA)){
             password.setText(sprefs.getString(CONTRA,""));
-            usedPreferences = true;
         }
     }
 
