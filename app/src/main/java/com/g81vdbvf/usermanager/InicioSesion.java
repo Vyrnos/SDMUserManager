@@ -7,13 +7,18 @@ import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
 
+import javax.crypto.SecretKey;
+
 public class InicioSesion extends AppCompatActivity {
+
+    private static final String TAG = "INICIO SESION:";
 
     EditText username, password;
     SharedPreferences sprefs;
@@ -73,6 +78,29 @@ public class InicioSesion extends AppCompatActivity {
                 Toast.makeText(InicioSesion.this,"Usuario o contraseña incorrectos",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /* ESTO NO SABEMOS AHORA MISMO DONDE VA (PAG 9 de 18 en PDF de ejercicios M3) */
+    SecretKey key;
+    String
+    getRawKey() {
+        if (key == null) {
+            return null;
+        }
+        return Crypto.toHex(key.getEncoded());
+    }
+
+    public SecretKey deriveKey(String password, byte[] salt) {
+        return Crypto.deriveKeyPbkdf2(salt, password);
+    }
+    public String encrypt(String plaintext, String password) {
+        byte[] salt = Crypto.generateSalt();
+        key = deriveKey(password, salt);
+        Log.d(TAG, "Generated key: " + getRawKey());
+        return Crypto.encrypt(plaintext, key, salt);
+    }
+    public String decrypt(String ciphertext, String password) {
+        return Crypto.decryptPbkdf2(ciphertext, password);
     }
 
 }
