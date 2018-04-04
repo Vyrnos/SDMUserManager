@@ -4,12 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.util.Log;
 
 
 public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
     private static final String MIS_PREFERENCIAS = "com.g81vdbvf.usermanager.login";
-    private SharedPreferences sprefs;
-    String pass;
+    private static SharedPreferences sprefs;
+    static String pass;
 
     private static final String DATABASE_NAME = "Prueba.db";
     private static final String TABLE_NAME = "users_table";
@@ -34,6 +35,8 @@ public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
             sInstance = new SQLCipherDBHelper(context.getApplicationContext());
             cont = context.getApplicationContext();
         }
+        sprefs = cont.getSharedPreferences(MIS_PREFERENCIAS, Context.MODE_PRIVATE);
+        pass = sprefs.getString("PassBBDD","");
         return sInstance;
     }
 
@@ -43,11 +46,7 @@ public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
 
 
     public void onCreate(net.sqlcipher.database.SQLiteDatabase db){
-        sprefs = cont.getSharedPreferences(MIS_PREFERENCIAS, Context.MODE_PRIVATE);
-        pass = sprefs.getString("PassBBDD","");
-
-
-                net.sqlcipher.database.SQLiteDatabase.loadLibs(cont);
+        net.sqlcipher.database.SQLiteDatabase.loadLibs(cont);
         db.execSQL("create table "+ TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, " +
                 "GENDER TEXT, LOCATION TEXT, USERNAME TEXT, PASSWORD TEXT, REGISTERED TEXT, PICTURE TEXT)");
     }
@@ -62,9 +61,6 @@ public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
                               String username, String password, String registered,
                               String picture) {
         net.sqlcipher.database.SQLiteDatabase.loadLibs(cont);
-
-
-
         net.sqlcipher.database.SQLiteDatabase db = this.getWritableDatabase(pass);
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2,name);
@@ -85,6 +81,7 @@ public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
 
     public Cursor getAllData() {
         net.sqlcipher.database.SQLiteDatabase.loadLibs(cont);
+        Log.v("SQLCIPHER-PASS", "LA pass es "+ pass);
         net.sqlcipher.database.SQLiteDatabase db = this.getWritableDatabase(pass);
         Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
         return res;
