@@ -10,9 +10,9 @@ import android.util.Log;
 public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
     private static final String MIS_PREFERENCIAS = "com.g81vdbvf.usermanager.login";
     private static SharedPreferences sprefs;
-    static String pass;
+    private static String pass;
 
-    private static final String DATABASE_NAME = "Prueba.db";
+    private static String DATABASE_NAME = "";
     private static final String TABLE_NAME = "users_table";
     private static final String COL_1 = "ID";
     private static final String COL_2 = "NAME";
@@ -26,22 +26,30 @@ public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
     private static SQLCipherDBHelper sInstance;
     private static Context cont;
 
-    public static synchronized SQLCipherDBHelper getInstance(Context context) {
+    public static synchronized SQLCipherDBHelper getInstance(Context context, String DBNAME) {
 
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new SQLCipherDBHelper(context.getApplicationContext());
+            sInstance = new SQLCipherDBHelper(context.getApplicationContext(),DBNAME);
             cont = context.getApplicationContext();
         }
         sprefs = cont.getSharedPreferences(MIS_PREFERENCIAS, Context.MODE_PRIVATE);
-        pass = sprefs.getString("PassBBDD","");
+
+        if(DBNAME.equals("PBE.db")) pass = sprefs.getString("PassBBDD","");
+        else if(DBNAME.equals("KEYSTORE.db")) pass = sprefs.getString("KeyStoreBBDD","");
+
         return sInstance;
     }
 
-    public SQLCipherDBHelper(Context context){
-        super(context, DATABASE_NAME, null, 1);
+    public void close(){
+        sInstance = null;
+        cont = null;
+    }
+
+    private SQLCipherDBHelper(Context context, String DBNAME){
+        super(context, DBNAME, null, 1);
     }
 
 
@@ -72,19 +80,14 @@ public class SQLCipherDBHelper extends net.sqlcipher.database.SQLiteOpenHelper {
         contentValues.put(COL_8,picture);
 
         long result = db.insert(TABLE_NAME,null ,contentValues);
-        if(result == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return result != -1;
     }
 
     public Cursor getAllData() {
         net.sqlcipher.database.SQLiteDatabase.loadLibs(cont);
         Log.v("SQLCIPHER-PASS", "LA pass es "+ pass);
         net.sqlcipher.database.SQLiteDatabase db = this.getWritableDatabase(pass);
-        Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
-        return res;
+        return db.rawQuery("select * from "+TABLE_NAME,null);
     }
 
     public boolean updateData(String id, String name,String gender,String location,
