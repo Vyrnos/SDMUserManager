@@ -31,6 +31,7 @@ public class PantallaPresentacion extends AppCompatActivity {
     SecretKey key;
     public static final String MIS_PREFERENCIAS = "com.g81vdbvf.usermanager.login";
 
+    //-------------------------------MÉTODOS PBE------------------------------------//
     String getRawKey() {
         if (key == null) {
             return null;
@@ -51,8 +52,9 @@ public class PantallaPresentacion extends AppCompatActivity {
     public String decrypt(String ciphertext, String password) {
         return Crypto.decryptPbkdf2(ciphertext, password);
     }
+    //----------------------------FIN MÉTODOS PBE-----------------------------------//
 
-
+    //----------------------------MÉTODOS KEYSTORE----------------------------------//
     public void loadKeyStore() {
         try {
             keyStore = java.security.KeyStore.getInstance(ANDROID_KEYSTORE);
@@ -116,7 +118,7 @@ public class PantallaPresentacion extends AppCompatActivity {
         return cert.getPublicKey();
     }
 
-
+    //---------------------------FIN MÉTODOS KEYSTORE-----------------------------//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,12 +135,12 @@ public class PantallaPresentacion extends AppCompatActivity {
             Log.v("ASDASDASDASD", "LA PASS ES: " + list.get(i).getPassword() + " Y EL USER: "+ list.get(i).getUsername());
         }
 
-
+        //-----VARIABLES COMUNES PARA KEYSTORE Y PBE----//
         String DBNAME;
         SharedPreferences sprefs = getSharedPreferences(MIS_PREFERENCIAS, Context.MODE_PRIVATE);
+        //-----------FIN VARIABLES COMUNES--------------//
 
-
-        //---------------------------------------PARTE KEYSTORE----------------------------------
+        //---------------------------------------PARTE KEYSTORE----------------------------------//
         DBNAME = "KEYSTORE.db";
         String claveCifrado = "";
 
@@ -178,9 +180,9 @@ public class PantallaPresentacion extends AppCompatActivity {
             db.close();
         }
 
-        //-----------------------------------FIN PARTE KEYSTORE----------------------------------
+        //-----------------------------------FIN PARTE KEYSTORE----------------------------------//
 
-        //---------------------------------------PARTE PBE---------------------------------------
+        //---------------------------------------PARTE PBE---------------------------------------//
 
         DBNAME = "PBE.db";
         if(!sprefs.contains("PassBBDD")) {
@@ -213,7 +215,7 @@ public class PantallaPresentacion extends AppCompatActivity {
             cursor.close();
             db.close();
         }
-        //-----------------------------------FIN PARTE PBE---------------------------------------
+        //-----------------------------------FIN PARTE PBE---------------------------------------//
 
         Thread reloj = new Thread(){
             public void run(){
